@@ -1,4 +1,5 @@
 <!doctype html>
+
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
@@ -10,9 +11,31 @@
   --fatha:#8fb7d7; --jagu:#b8a0d1; --mosfa:#e08e84; --seti:#d9b070; --lathu:#efe18a; --kepta:#9ccf9b; --vomja:#76cbd0;
   --text:#e9eef6;
 }
-html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;}
-body{display:flex;align-items:center;justify-content:center;padding:18px;box-sizing:border-box;}
-.wrap{width:100%;max-width:980px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border-radius:14px;padding:var(--pad);box-sizing:border-box;border:1px solid rgba(255,255,255,0.03)}
+
+/* Fix for mobile: allow top visibility and scrolling */
+html,body{
+height:100%;
+margin:0;
+background:var(--bg);
+color:var(--text);
+font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+display:block; /* remove vertical centering */
+box-sizing:border-box;
+padding:18px 18px 24px 18px; /* extra bottom padding for mobile scrolling */
+}
+
+.wrap{
+width:100%;
+max-width:980px;
+margin:0 auto; /* horizontal centering */
+background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
+border-radius:14px;
+padding:var(--pad);
+box-sizing:border-box;
+border:1px solid rgba(255,255,255,0.03)
+}
+
+/* your existing CSS */
 header{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .title{font-family:Georgia,serif;font-size:20px;margin:0}
 .dateBlock{display:flex;flex-direction:column}
@@ -43,8 +66,14 @@ header{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .future{opacity:0.9}
 .legend{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;color:var(--muted);font-size:13px}
 .sw{width:14px;height:9px;border-radius:3px}
-@media(max-width:700px){ .wrap{padding:12px} .pieWrap{width:92px;height:92px} .dayCell{min-height:44px;padding:6px} .track{height:30px} }
-</style>
+
+@media(max-width:700px){
+.wrap{padding:12px}
+.pieWrap{width:92px;height:92px}
+.dayCell{min-height:44px;padding:6px}
+.track{height:30px}
+} </style>
+
 </head>
 <body>
   <div class="wrap" role="application" aria-label="Dorzafa — Feya labels + mini cal fix">
@@ -55,339 +84,23 @@ header{display:flex;justify-content:space-between;align-items:center;gap:12px}
         <div class="pasho" id="pashoLine">—</div>
       </div>
 
-      <div class="visuals" aria-hidden="false">
-        <div class="pieWrap" title="Kishep wheel">
-          <svg id="pie" viewBox="-60 -60 120 120" xmlns="http://www.w3.org/2000/svg"></svg>
-          <div class="pieCenter" id="pieCenter">—</div>
-        </div>
-
-        <div style="display:flex;flex-direction:column;align-items:flex-end">
-          <div class="moonBox" id="moonBox" title="Moon phase"></div>
-          <div class="clock" id="liveClock">—</div>
-        </div>
-      </div>
-    </header>
-
-    <div class="bars" aria-hidden="false">
-      <div>
-        <div class="barLabel"><div>Kishep (progress)</div><div id="k1label">—</div></div>
-        <div class="track"><div id="k1fill" class="fill"></div></div>
-      </div>
-
-      <div>
-        <div class="barLabel"><div>Moon-quarter (1–7)</div><div id="k2label">—</div></div>
-        <div class="track"><div id="k2fill" class="fill"></div></div>
-      </div>
-
-      <div>
-        <div class="barLabel"><div>Tokaido day (1–7)</div><div id="k3label">—</div></div>
-        <div class="track"><div id="k3fill" class="fill"></div></div>
-      </div>
-
-      <div>
-        <div class="barLabel"><div>Feya progress (midnight→midnight)</div><div id="dayLabel">—</div></div>
-        <div class="track"><div id="dayFill" class="fill"></div></div>
-        <div class="feyaRow" id="feyaRow" aria-hidden="false"></div>
-      </div>
+```
+  <div class="visuals" aria-hidden="false">
+    <div class="pieWrap" title="Kishep wheel">
+      <svg id="pie" viewBox="-60 -60 120 120" xmlns="http://www.w3.org/2000/svg"></svg>
+      <div class="pieCenter" id="pieCenter">—</div>
     </div>
 
-    <div class="gridWrap">
-      <div class="gridTitle"><div id="gridTitle">—</div><div id="gridSub" style="color:var(--muted)">52 days · fixed starts</div></div>
-
-      <div class="weekHeader" id="weekHeader"></div>
-
-      <div class="grid" id="kishepGrid" role="grid" aria-label="Kishep calendar"></div>
-
-      <div class="legend" id="legend">
-        <div style="display:flex;align-items:center;gap:8px"><div class="sw" style="background:var(--fatha)"></div><div>FATHA</div></div>
-        <div style="display:flex;align-items:center;gap:8px"><div class="sw" style="background:var(--jagu)"></div><div>JAGU</div></div>
-        <div style="display:flex;align-items:center;gap:8px"><div class="sw" style="background:var(--mosfa)"></div><div>MOSFA</div></div>
-        <div style="display:flex;align-items:center;gap:8px"><div class="sw" style="background:var(--seti)"></div><div>SETI</div></div>
-        <div style="display:flex;align-items:center;gap:8px"><div class="sw" style="background:var(--lathu)"></div><div>LATHU</div></div>
-        <div style="display:flex;align-items:center;gap:8px"><div class="sw" style="background:var(--kepta)"></div><div>KEPTA</div></div>
-        <div style="display:flex;align-items:center;gap:8px"><div class="sw" style="background:var(--vomja)"></div><div>VOMJA</div></div>
-      </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end">
+      <div class="moonBox" id="moonBox" title="Moon phase"></div>
+      <div class="clock" id="liveClock">—</div>
     </div>
   </div>
+</header>
 
-<script>
-document.addEventListener('DOMContentLoaded', ()=>{
+<!-- rest of your HTML content stays exactly the same -->
+<!-- bars, feyaRow, gridWrap, legend, scripts... -->
+```
 
-  // ---------- Configuration ----------
-  const STARTS = [
-    { name:"FATHAKISHEP", short:"Fatha", mmdd:"06-14", color:getComputedStyle(document.documentElement).getPropertyValue('--fatha').trim() },
-    { name:"JAGUKISHEP",  short:"Jagu",  mmdd:"08-05", color:getComputedStyle(document.documentElement).getPropertyValue('--jagu').trim() },
-    { name:"MOSFAKISHEP", short:"Mosfa", mmdd:"09-26", color:getComputedStyle(document.documentElement).getPropertyValue('--mosfa').trim() },
-    { name:"SETIKISHEP",  short:"Seti",  mmdd:"11-17", color:getComputedStyle(document.documentElement).getPropertyValue('--seti').trim() },
-    { name:"LATHUKISHEP", short:"Lathu", mmdd:"01-08", color:getComputedStyle(document.documentElement).getPropertyValue('--lathu').trim() },
-    { name:"KEPTAKISHEP", short:"Kepta", mmdd:"03-01", color:getComputedStyle(document.documentElement).getPropertyValue('--kepta').trim() },
-    { name:"VOMJAKISHEP", short:"Vomja", mmdd:"04-22", color:getComputedStyle(document.documentElement).getPropertyValue('--vomja').trim() }
-  ];
-
-  const feyaNames = ["FATHAFEYA","JAGUFEYA","MOSFAFEYA","SETIFEYA","LATHUFEYA","KEPTAFEYA","VOMJAFEYA"];
-  const PHX = { lat:33.4484, lng:-112.0740, tzOffset:-7 };
-  const SYNODIC = 29.530588853;
-  const msDay = 24*60*60*1000;
-
-  function phoenixMidnight(y,m,d){
-    const utcMid = Date.UTC(y, m-1, d, 0,0,0);
-    return new Date(utcMid - (PHX.tzOffset * 3600 * 1000));
-  }
-
-  function toJulian(d){ return d.getTime()/86400000 + 2440587.5; }
-  function moonInfo(d){
-    const jd = toJulian(d);
-    const age = ((jd - 2451550.1) % SYNODIC + SYNODIC) % SYNODIC;
-    const phase = age / SYNODIC;
-    const illum = (1 - Math.cos(2*Math.PI*phase)) / 2;
-    return {phase, illum, age};
-  }
-
-  function moonSVG(phase, illum){
-    const waxing = phase <= 0.5;
-    const k = 1.65 * (1 - illum);
-    const dir = waxing ? 1 : -1;
-    const offset = dir * k;
-    const cx = 18 + offset * 8;
-    const r = 10;
-    if(illum > 0.98) return `<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="18" r="${r}" fill="white"/></svg>`;
-    if(illum < 0.02) return `<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="18" r="${Math.max(2, r*illum)}" fill="white"/></svg>`;
-    return `<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
-      <defs><mask id="m"><rect x="0" y="0" width="36" height="36" fill="black"/><circle cx="18" cy="18" r="${r}" fill="white"/><circle cx="${cx.toFixed(2)}" cy="18" r="${r}" fill="black"/></mask></defs>
-      <rect x="0" y="0" width="36" height="36" fill="black" mask="url(#m)"></rect>
-      <circle cx="18" cy="18" r="${r}" fill="white" fill-opacity="0.06" stroke="white" stroke-opacity="0.12"/>
-    </svg>`;
-  }
-
-  function buildCandidateStarts(refYear){
-    const list=[];
-    for(const y of [refYear-1, refYear, refYear+1]){
-      for(const s of STARTS){
-        const [m,d]=s.mmdd.split('-').map(x=>parseInt(x,10));
-        list.push({name:s.name, short:s.short, color:s.color, start: phoenixMidnight(y,m,d)});
-      }
-    }
-    list.sort((a,b)=>a.start - b.start);
-    return list;
-  }
-
-  function findCurrentKishep(nowPhoenix){
-    const refYear = nowPhoenix.getFullYear();
-    const candidates = buildCandidateStarts(refYear);
-    let lastIdx = 0;
-    for(let i=0;i<candidates.length;i++){
-      if(candidates[i].start.getTime() <= nowPhoenix.getTime()) lastIdx = i;
-    }
-    const seq = [];
-    for(let i=0;i<8;i++) seq.push(candidates[(lastIdx + i) % candidates.length]);
-    let currentIndex = 0;
-    for(let i=0;i<seq.length-1;i++){
-      if(nowPhoenix.getTime() >= seq[i].start.getTime() && nowPhoenix.getTime() < seq[i+1].start.getTime()){
-        currentIndex = i; break;
-      }
-      if(i === seq.length-2 && nowPhoenix.getTime() >= seq[i+1].start.getTime()) currentIndex = i+1;
-    }
-    const kishepStart = seq[currentIndex].start;
-    const kishepEnd = seq[(currentIndex+1) % seq.length].start;
-    const canonicalIndex = STARTS.findIndex(s => s.name === seq[currentIndex].name);
-    return {kishepStart, kishepEnd, kishepObj: seq[currentIndex], canonicalIndex, seq, currentIndex};
-  }
-
-  // live values reused
-  let nowPhoenix, phoenixMidToday;
-
-  function hhmm(d){
-    return d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12:false});
-  }
-
-  function updateAll(){
-    const sysNow = new Date();
-    nowPhoenix = new Date(sysNow.getTime() - (PHX.tzOffset * 3600 * 1000));
-    phoenixMidToday = phoenixMidnight(nowPhoenix.getFullYear(), nowPhoenix.getMonth()+1, nowPhoenix.getDate());
-
-    const cur = findCurrentKishep(phoenixMidToday);
-    const kishepStart = cur.kishepStart;
-    const kishepEnd = cur.kishepEnd;
-    const kishep = cur.kishepObj;
-    const canonicalIndex = cur.canonicalIndex >=0 ? cur.canonicalIndex : 0;
-
-    let dayInKishep = Math.floor((phoenixMidToday.getTime() - kishepStart.getTime())/msDay) + 1;
-    if(dayInKishep < 1) dayInKishep = 1;
-    if(dayInKishep > 52) dayInKishep = 52;
-
-    const june14This = phoenixMidnight(sysNow.getFullYear(), 6, 14);
-    let kishepYear = (sysNow.getTime() >= june14This.getTime()) ? (sysNow.getFullYear() - 2014 + 1) : (sysNow.getFullYear() - 2014);
-
-    const moonQuarter = Math.min(7, Math.floor((dayInKishep-1)/(52/7))+1);
-    const tokaidoDay = ((dayInKishep-1)%7) + 1;
-
-    // header
-    document.getElementById('gregLine').textContent = sysNow.toLocaleDateString(undefined,{weekday:'long', year:'numeric', month:'long', day:'numeric'});
-    const startFeyaIndex = 5;
-    const feyaIndex = (startFeyaIndex + (dayInKishep-1)) % 7;
-    const feyaName = feyaNames[feyaIndex];
-    document.getElementById('pashoLine').textContent = `${feyaName}, ${kishep.name} ${dayInKishep} • PASHTO ${kishepYear}`;
-
-    // pie
-    (function renderPie(){
-      const svg = document.getElementById('pie'); svg.innerHTML='';
-      const r=54, slices=7, step=360/slices;
-      for(let i=0;i<slices;i++){
-        const sa=-90 + i*step, ea=sa+step;
-        const x1=r*Math.cos(sa*Math.PI/180), y1=r*Math.sin(sa*Math.PI/180);
-        const x2=r*Math.cos(ea*Math.PI/180), y2=r*Math.sin(ea*Math.PI/180);
-        const d=`M 0 0 L ${x1} ${y1} A ${r} ${r} 0 0 1 ${x2} ${y2} z`;
-        const p=document.createElementNS('http://www.w3.org/2000/svg','path');
-        p.setAttribute('d',d);
-        const color = STARTS[i].color || '#666';
-        p.setAttribute('fill',color);
-        p.setAttribute('opacity', i===canonicalIndex ? '1' : '0.18');
-        p.setAttribute('stroke','#0b0b0b'); p.setAttribute('stroke-width','0.6');
-        svg.appendChild(p);
-      }
-      document.getElementById('pieCenter').textContent = kishep.short;
-    })();
-
-    // moon
-    (function renderMoon(){
-      const mi = moonInfo(sysNow);
-      const svg = moonSVG(mi.phase, mi.illum);
-      document.getElementById('moonBox').innerHTML = svg;
-      document.getElementById('moonBox').title = `Moon ${Math.round(mi.illum*100)}%`;
-    })();
-
-    // bars + feya labels
-    (function renderBarsAndLabels(){
-      const kPct = Math.max(0, Math.min(100, (dayInKishep/52)*100));
-      const k1 = document.getElementById('k1fill'); k1.style.width = kPct + '%'; k1.style.background = kishep.color; k1.textContent = `${dayInKishep}/52`; document.getElementById('k1label').textContent = `Day ${dayInKishep} of 52`;
-
-      const k2 = document.getElementById('k2fill'); k2.style.width = (moonQuarter/7*100)+'%'; const quarterStart = Math.floor((moonQuarter-1)*(52/7))+1; const quarterFeyaIdx = (startFeyaIndex + (quarterStart-1))%7; k2.style.background = getComputedStyle(document.documentElement).getPropertyValue('--' + feyaNames[quarterFeyaIdx].toLowerCase()) || kishep.color; k2.textContent = `${moonQuarter}/7`; document.getElementById('k2label').textContent = `${moonQuarter}/7`;
-
-      const k3 = document.getElementById('k3fill'); k3.style.width = (tokaidoDay/7*100)+'%'; const tokaFeyaIdx = (startFeyaIndex + (dayInKishep-1))%7; k3.style.background = getComputedStyle(document.documentElement).getPropertyValue('--' + feyaNames[tokaFeyaIdx].toLowerCase()) || kishep.color; k3.textContent = `${tokaidoDay}/7`; document.getElementById('k3label').textContent = `${tokaidoDay}/7`;
-
-      // FEYA progress: midnight->midnight split into 7 segments (Phoenix-local)
-      const midnightStart = phoenixMidnight(nowPhoenix.getFullYear(), nowPhoenix.getMonth()+1, nowPhoenix.getDate());
-      let diff = nowPhoenix.getTime() - midnightStart.getTime();
-      if(diff < 0) diff += msDay;
-      const segLen = msDay / 7;
-      const segIndex = Math.min(7, Math.max(1, Math.floor(diff / segLen) + 1));
-      const segProgress = ((diff % segLen) / segLen) * 100;
-      const dayFill = document.getElementById('dayFill');
-      dayFill.style.width = (segIndex === 7 ? 100 : segProgress) + '%';
-      const segFeyaIdx = (startFeyaIndex + (segIndex - 1)) % 7;
-      dayFill.style.background = getComputedStyle(document.documentElement).getPropertyValue('--' + feyaNames[segFeyaIdx].toLowerCase()) || kishep.color;
-      dayFill.textContent = `${segIndex}/7`;
-      document.getElementById('dayLabel').textContent = `${segIndex}/7`;
-
-      // Build readable labels showing exact Phoenix time ranges for the 7 segments
-      const feyaRow = document.getElementById('feyaRow'); feyaRow.innerHTML = '';
-      for(let i=0;i<7;i++){
-        const segStart = new Date(midnightStart.getTime() + (i * segLen));
-        const segEnd = new Date(midnightStart.getTime() + ((i+1) * segLen));
-        // format local Phoenix times (24-hour)
-        const startLabel = hhmm(segStart);
-        const endLabel = hhmm(segEnd);
-        const chip = document.createElement('div');
-        chip.className = 'feyaChip';
-        // Mark the current segment with bolder text and a background tint
-        if(i+1 === segIndex){
-          chip.style.background = 'rgba(255,255,255,0.09)';
-          chip.style.color = '#fff';
-        }
-        // e.g. "Feya 1 • 00:00–03:25"
-        chip.textContent = `Feya ${i+1} • ${startLabel}–${endLabel}`;
-        feyaRow.appendChild(chip);
-      }
-    })();
-    // end bars+labels
-
-    // -------------------------
-    // MINI-CALENDAR (Sun–Sat columns)
-    // -------------------------
-    (function renderCalendar(){
-      const grid = document.getElementById('kishepGrid');
-      const weekHeader = document.getElementById('weekHeader');
-      grid.innerHTML = ''; weekHeader.innerHTML = '';
-
-      // Week header: explicitly Sun..Sat (no locale dependence)
-      const cols = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-      cols.forEach(s => {
-        const el = document.createElement('div');
-        el.textContent = s;
-        weekHeader.appendChild(el);
-      });
-
-      const day1Weekday = kishepStart.getDay(); // 0..6 where 0=Sunday
-      const rows = 8, totalSlots = rows * 7;
-      const cells = new Array(totalSlots).fill(null);
-
-      for(let d=1; d<=52; d++){
-        const pos = day1Weekday + (d - 1);         // linear position starting from column = day1Weekday
-        const row = Math.floor(pos / 7);
-        const col = pos % 7;
-        const idx = row * 7 + col;
-
-        const dayMid = new Date(kishepStart.getTime() + (d - 1) * msDay);
-        const cell = document.createElement('div'); cell.className = 'dayCell';
-        const n = document.createElement('div'); n.className='dayNum'; n.textContent = d;
-        const g = document.createElement('div'); g.className='dayGreg'; g.textContent = `${dayMid.getMonth()+1}/${dayMid.getDate()}`;
-        cell.appendChild(n); cell.appendChild(g);
-
-        const todayMid = phoenixMidnight(nowPhoenix.getFullYear(), nowPhoenix.getMonth()+1, nowPhoenix.getDate());
-        if(dayMid.getTime() < todayMid.getTime()) cell.classList.add('past');
-        else if(dayMid.getTime() === todayMid.getTime()){
-          cell.classList.add('today');
-          const feyaIdx = (5 + (d-1)) % 7;
-          cell.style.background = getComputedStyle(document.documentElement).getPropertyValue('--' + feyaNames[feyaIdx].toLowerCase()) || kishep.color;
-          cell.style.color = '#000';
-        } else cell.classList.add('future');
-
-        cells[idx] = cell;
-      }
-
-      for(let i=0;i<totalSlots;i++){
-        if(cells[i]) grid.appendChild(cells[i]);
-        else { const empty = document.createElement('div'); empty.className='dayCell'; empty.style.opacity='0.03'; grid.appendChild(empty); }
-      }
-      document.getElementById('gridTitle').textContent = `${kishep.name.toUpperCase()} — Day ${dayInKishep} of 52`;
-    })();
-
-    // live clock line
-    document.getElementById('liveClock').textContent = sysNow.toLocaleTimeString();
-  } // end updateAll
-
-  // initial + periodic
-  updateAll();
-  setInterval(updateAll, 30*1000);
-
-  // helpers
-  function hhmm(d){
-    // format in Phoenix-local style using toLocaleTimeString but force 24-hour and zero-pad
-    return d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12:false});
-  }
-  function toRad(a){ return a*Math.PI/180; }
-  function getSunsetUTC(dateUTC, lat, lng){
-    const year = dateUTC.getUTCFullYear(), month = dateUTC.getUTCMonth()+1, day = dateUTC.getUTCDate();
-    const jd = (Date.UTC(year, month-1, day) / 86400000) + 2440587.5;
-    const n = jd - 2451545.0 - lng/360;
-    const M = (357.5291 + 0.98560028*n) % 360;
-    const C = 1.9148*Math.sin(toRad(M)) + 0.02*Math.sin(toRad(2*M)) + 0.0003*Math.sin(toRad(3*M));
-    const lambda = (M + C + 180 + 102.9372) % 360;
-    const Jtransit = 2451545.0 + n + 0.0053*Math.sin(toRad(M)) - 0.0069*Math.sin(toRad(2*lambda));
-    const delta = Math.asin(Math.sin(toRad(lambda)) * Math.sin(toRad(23.44)));
-    const latRad = toRad(PHX.lat);
-    const cos_omega = (Math.sin(toRad(-0.83)) - Math.sin(latRad)*Math.sin(delta)) / (Math.cos(latRad)*Math.cos(delta));
-    if(cos_omega < -1 || cos_omega > 1) return null;
-    const omega = Math.acos(cos_omega);
-    const Jset = Jtransit + omega/(2*Math.PI);
-    return new Date((Jset - 2440587.5) * 86400000);
-  }
-  function phoenixMidnight(y,m,d){
-    const utcMid = Date.UTC(y, m-1, d, 0,0,0);
-    return new Date(utcMid - (PHX.tzOffset * 3600 * 1000));
-  }
-
-}); // DOMContentLoaded
-</script>
 </body>
 </html>
