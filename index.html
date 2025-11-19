@@ -1,140 +1,438 @@
-<!DOCTYPE html>
+<!doctype html>
 
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dorzafa — Live Calendar</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>Dorzafa — Live Feya Calendar (Complete)</title>
 <style>
 :root{
-  --bg:#0b0c10; --card:#111217; --muted:#9aa0a6; --pad:14px;
-  --fatha:#8fb7d7; --jagu:#b8a0d1; --mosfa:#e08e84;
-  --seti:#d9b070; --lathu:#efe18a; --kepta:#9ccf9b; --vomja:#76cbd0;
+  --bg:#0b0c10; --card:#111217; --muted:#9aa0a6; --pad:14px; --radius:12px;
+  --fatha:#8fb7d7; --jagu:#b8a0d1; --mosfa:#e08e84; --seti:#d9b070; --lathu:#efe18a; --kepta:#9ccf9b; --vomja:#76cbd0;
   --text:#e9eef6;
 }
 html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;}
-body{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:18px;box-sizing:border-box;}
-.wrap{width:100%;max-width:980px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border-radius:14px;padding:var(--pad);box-sizing:border-box;border:1px solid rgba(255,255,255,0.03);}
-header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
-.title{font-family:Georgia,serif;font-size:20px;margin:0;}
-.dateBlock{display:flex;flex-direction:column;}
-.greg{font-weight:700;font-size:15px;margin:0;}
-.pasho{color:var(--muted);font-size:13px;margin-top:6px;}
-.visuals{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
-.pieWrap{width:120px;height:120px;border-radius:12px;background:var(--card);display:flex;align-items:center;justify-content:center;position:relative;border:1px solid rgba(255,255,255,0.02);}
-#pie{width:100%;height:100%;}
-.pieCenter{position:absolute;font-weight:800;}
-.moonBox{width:64px;height:64px;border-radius:12px;background:rgba(255,255,255,0.02);display:flex;align-items:center;justify-content:center;}
-.clock{font-size:13px;color:var(--muted);text-align:right;}
-.bars{margin-top:14px;display:flex;flex-direction:column;gap:12px;}
-.barLabel{display:flex;justify-content:space-between;color:var(--muted);font-weight:600;font-size:13px;}
-.track{height:36px;background:rgba(255,255,255,0.02);border-radius:999px;overflow:hidden;border:1px solid rgba(255,255,255,0.02);}
-.fill{height:100%;width:0%;display:flex;align-items:center;justify-content:center;color:#000;font-weight:800;transition:width .45s ease;padding:0 8px;}
-.feyaRow{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;}
-.feyaChip{background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:999px;font-size:12px;color:var(--muted);}
-.gridWrap{margin-top:14px;}
-.gridTitle{display:flex;justify-content:space-between;align-items:center;color:var(--muted);margin-bottom:8px;}
-.weekHeader{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:6px;}
-.weekHeader div{text-align:center;color:var(--muted);font-weight:700;font-size:12px;}
-.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
-.dayCell{background:rgba(255,255,255,0.02);border-radius:8px;padding:8px;text-align:center;min-height:56px;box-sizing:border-box;border:1px solid rgba(255,255,255,0.02);}
-.dayNum{font-weight:800;}
-.dayGreg{font-size:12px;color:var(--muted);margin-top:6px;}
-.past{opacity:0.45;}
-.today{outline:2px solid #fff;border-radius:8px;}
-.future{opacity:0.9;}
-.legend{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;color:var(--muted);font-size:13px;}
-.sw{width:14px;height:9px;border-radius:3px;}
+body{display:block;padding:18px;box-sizing:border-box;}
+.wrap{width:100%;max-width:980px;margin:0 auto;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border-radius:14px;padding:var(--pad);box-sizing:border-box;border:1px solid rgba(255,255,255,0.03);}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.title{font-family:Georgia,serif;font-size:20px;margin:0}
+.dateBlock{display:flex;flex-direction:column}
+.greg{font-weight:700;font-size:15px;margin:0}
+.pasho{color:var(--muted);font-size:13px;margin-top:6px}
+.visuals{display:flex;gap:12px;align-items:center}
+.pieWrap{width:120px;height:120px;border-radius:12px;background:var(--card);display:flex;align-items:center;justify-content:center;position:relative;border:1px solid rgba(255,255,255,0.02)}
+#pie{width:100%;height:100%}
+.pieCenter{position:absolute;font-weight:800}
+.moonBox{width:64px;height:64px;border-radius:12px;background:rgba(255,255,255,0.02);display:flex;align-items:center;justify-content:center}
+.clock{font-size:13px;color:var(--muted);text-align:right}
+.bars{margin-top:14px;display:flex;flex-direction:column;gap:12px}
+.barLabel{display:flex;justify-content:space-between;color:var(--muted);font-weight:600;font-size:13px}
+.track{height:36px;background:rgba(255,255,255,0.02);border-radius:999px;overflow:hidden;border:1px solid rgba(255,255,255,0.02)}
+.fill{height:100%;width:0%;display:flex;align-items:center;justify-content:center;color:#000;font-weight:800;transition:width .45s ease;padding:0 8px}
+.feyaRow{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.feyaChip{background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:999px;font-size:12px;color:var(--muted)}
+.gridWrap{margin-top:14px}
+.gridTitle{display:flex;justify-content:space-between;align-items:center;color:var(--muted);margin-bottom:8px}
+.weekHeader{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:6px}
+.weekHeader div{text-align:center;color:var(--muted);font-weight:700;font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.dayCell{background:rgba(255,255,255,0.02);border-radius:8px;padding:8px;text-align:center;min-height:56px;box-sizing:border-box;border:1px solid rgba(255,255,255,0.02)}
+.dayNum{font-weight:800}
+.dayGreg{font-size:12px;color:var(--muted);margin-top:6px}
+.past{opacity:0.45}
+.today{outline:2px solid #fff;border-radius:8px}
+.future{opacity:0.9}
+.legend{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;color:var(--muted);font-size:13px}
+.sw{width:14px;height:9px;border-radius:3px}
 @media(max-width:700px){ .wrap{padding:12px} .pieWrap{width:92px;height:92px} .dayCell{min-height:44px;padding:6px} .track{height:30px} }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <div class="dateBlock">
-      <div class="title">Dorzafa — Live</div>
-      <div class="greg" id="gregLine">—</div>
-      <div class="pasho" id="pashoLine">—</div>
-    </div>
-    <div class="visuals">
-      <div class="pieWrap" title="Kishep wheel">
-        <svg id="pie" viewBox="-60 -60 120 120"></svg>
-        <div class="pieCenter" id="pieCenter">—</div>
+  <div class="wrap" role="application" aria-label="Dorzafa live calendar">
+    <header>
+      <div class="dateBlock">
+        <div class="title">Dorzafa — Live</div>
+        <div class="greg" id="gregLine">—</div>
+        <div class="pasho" id="pashoLine">—</div>
       </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end">
-        <div class="moonBox" id="moonBox" title="Moon phase"></div>
-        <div class="clock" id="liveClock">—</div>
-      </div>
-    </div>
-  </header>
 
-  <div class="bars">
-    <div>
-      <div class="barLabel"><div>Kishep (progress)</div><div id="k1label">—</div></div>
-      <div class="track"><div id="k1fill" class="fill"></div></div>
+```
+  <div class="visuals" aria-hidden="false">
+    <div class="pieWrap" title="Kishep wheel">
+      <svg id="pie" viewBox="-60 -60 120 120" xmlns="http://www.w3.org/2000/svg"></svg>
+      <div class="pieCenter" id="pieCenter">—</div>
     </div>
-    <div>
-      <div class="barLabel"><div>Moon-quarter (1–7)</div><div id="k2label">—</div></div>
-      <div class="track"><div id="k2fill" class="fill"></div></div>
+
+    <div style="display:flex;flex-direction:column;align-items:flex-end">
+      <div class="moonBox" id="moonBox" title="Moon phase"></div>
+      <div class="clock" id="liveClock">—</div>
     </div>
-    <div>
-      <div class="barLabel"><div>Tokaido day (1–7)</div><div id="k3label">—</div></div>
-      <div class="track"><div id="k3fill" class="fill"></div></div>
-    </div>
-    <div>
-      <div class="barLabel"><div>Feya progress (midnight→midnight)</div><div id="dayLabel">—</div></div>
-      <div class="track"><div id="dayFill" class="fill"></div></div>
-      <div class="feyaRow" id="feyaRow"></div>
-    </div>
+  </div>
+</header>
+
+<div class="bars" aria-hidden="false">
+  <div>
+    <div class="barLabel"><div>Kishep (progress)</div><div id="k1label">—</div></div>
+    <div class="track"><div id="k1fill" class="fill"></div></div>
+  </div>
+
+  <div>
+    <div class="barLabel"><div>Moon-quarter (1–7)</div><div id="k2label">—</div></div>
+    <div class="track"><div id="k2fill" class="fill"></div></div>
+  </div>
+
+  <div>
+    <div class="barLabel"><div>Tokaido day (1–7)</div><div id="k3label">—</div></div>
+    <div class="track"><div id="k3fill" class="fill"></div></div>
+  </div>
+
+  <div>
+    <div class="barLabel"><div>Feya progress (midnight→midnight)</div><div id="dayLabel">—</div></div>
+    <div class="track"><div id="dayFill" class="fill"></div></div>
+    <div class="feyaRow" id="feyaRow" aria-hidden="false"></div>
   </div>
 </div>
 
+<div class="gridWrap">
+  <div class="gridTitle"><div id="gridTitle">—</div><div id="gridSub" style="color:var(--muted)">52 days · fixed starts</div></div>
+
+  <div class="weekHeader" id="weekHeader"></div>
+
+  <div class="grid" id="kishepGrid" role="grid" aria-label="Kishep calendar"></div>
+
+  <div class="legend" id="legend">
+    <div style="display:flex;align-items:center;gap:8px"><div class="sw" style="background:var(--fatha)"></div><div>FATHA</div></div>
+    <div style="display:flex;align-items:center;gap:8px"><div class="sw" style="background:var(--jagu)"></div><div>JAGU</div></div>
+    <div style="display:flex;align-items:center;gap:8px"><div class="sw" style="background:var(--mosfa)"></div><div>MOSFA</div></div>
+    <div style="display:flex;align-items:center;gap:8px"><div class="sw" style="background:var(--seti)"></div><div>SETI</div></div>
+    <div style="display:flex;align-items:center;gap:8px"><div class="sw" style="background:var(--lathu)"></div><div>LATHU</div></div>
+    <div style="display:flex;align-items:center;gap:8px"><div class="sw" style="background:var(--kepta)"></div><div>KEPTA</div></div>
+    <div style="display:flex;align-items:center;gap:8px"><div class="sw" style="background:var(--vomja)"></div><div>VOMJA</div></div>
+  </div>
+</div>
+```
+
+  </div>
+
 <script>
-function pad(num){return num.toString().padStart(2,'0');}
+/* ----------------------
+   Complete, single-file Dorzafa live calendar
+   - Save exactly as dorzafa.html and open in browser
+   - All calculations done client-side (Phoenix-local offsets are used)
+   ---------------------- */
 
-function updateLiveClock(){
-  const now = new Date();
-  document.getElementById('liveClock').textContent = now.toLocaleTimeString();
-  requestAnimationFrame(updateLiveClock);
-}
-updateLiveClock();
+(function(){
+  // Configuration
+  const STARTS = [
+    { name:"FATHAKISHEP", short:"Fatha", mmdd:"06-14", color:getComputedStyle(document.documentElement).getPropertyValue('--fatha').trim() },
+    { name:"JAGUKISHEP",  short:"Jagu",  mmdd:"08-05", color:getComputedStyle(document.documentElement).getPropertyValue('--jagu').trim() },
+    { name:"MOSFAKISHEP", short:"Mosfa", mmdd:"09-26", color:getComputedStyle(document.documentElement).getPropertyValue('--mosfa').trim() },
+    { name:"SETIKISHEP",  short:"Seti",  mmdd:"11-17", color:getComputedStyle(document.documentElement).getPropertyValue('--seti').trim() },
+    { name:"LATHUKISHEP", short:"Lathu", mmdd:"01-08", color:getComputedStyle(document.documentElement).getPropertyValue('--lathu').trim() },
+    { name:"KEPTAKISHEP", short:"Kepta", mmdd:"03-01", color:getComputedStyle(document.documentElement).getPropertyValue('--kepta').trim() },
+    { name:"VOMJAKISHEP", short:"Vomja", mmdd:"04-22", color:getComputedStyle(document.documentElement).getPropertyValue('--vomja').trim() }
+  ];
+  const feyaNames = ["FATHAFEYA","JAGUFEYA","MOSFAFEYA","SETIFEYA","LATHUFEYA","KEPTAFEYA","VOMJAFEYA"];
+  const PHX = { lat:33.4484, lng:-112.0740, tzOffset:-7 }; // Phoenix local offset (no DST)
+  const SYNODIC = 29.530588853;
+  const msDay = 24*60*60*1000;
 
-// Example: simple Kishep calendar demo data
-const feyaNames = ["FATHA","JAGU","MOSFA","SETI","LATHU","KEPTA","VOMJA"];
-function updateBars(){
-  const now = new Date();
-  const start = new Date(now.getFullYear(),0,1);
-  const dayOfYear = Math.floor((now - start)/(1000*60*60*24))+1;
-  const kishepProgress = dayOfYear/365;
-  document.getElementById('k1fill').style.width = (kishepProgress*100)+'%';
-  document.getElementById('k1label').textContent = Math.floor(kishepProgress*100)+'%';
-
-  const moonQuarter = (dayOfYear%7)+1;
-  document.getElementById('k2fill').style.width = (moonQuarter/7*100)+'%';
-  document.getElementById('k2label').textContent = moonQuarter;
-
-  const tokaidoDay = (dayOfYear%7)+1;
-  document.getElementById('k3fill').style.width = (tokaidoDay/7*100)+'%';
-  document.getElementById('k3label').textContent = tokaidoDay;
-
-  const feyaProgress = (now.getHours()*60+now.getMinutes())/1440;
-  document.getElementById('dayFill').style.width = (feyaProgress*100)+'%';
-  document.getElementById('dayLabel').textContent = Math.floor(feyaProgress*100)+'%';
-
+  // DOM references
+  const gregLine = document.getElementById('gregLine');
+  const pashoLine = document.getElementById('pashoLine');
+  const liveClock = document.getElementById('liveClock');
+  const pieSVG = document.getElementById('pie');
+  const pieCenter = document.getElementById('pieCenter');
+  const moonBox = document.getElementById('moonBox');
+  const k1fill = document.getElementById('k1fill');
+  const k1label = document.getElementById('k1label');
+  const k2fill = document.getElementById('k2fill');
+  const k2label = document.getElementById('k2label');
+  const k3fill = document.getElementById('k3fill');
+  const k3label = document.getElementById('k3label');
+  const dayFill = document.getElementById('dayFill');
+  const dayLabel = document.getElementById('dayLabel');
   const feyaRow = document.getElementById('feyaRow');
-  feyaRow.innerHTML = '';
-  for(let i=0;i<7;i++){
-    const chip = document.createElement('div');
-    chip.className='feyaChip';
-    chip.style.background = ['#8fb7d7','#b8a0d1','#e08e84','#d9b070','#efe18a','#9ccf9b','#76cbd0'][i];
-    chip.textContent = feyaNames[i];
-    feyaRow.appendChild(chip);
+  const kishepGrid = document.getElementById('kishepGrid');
+  const weekHeader = document.getElementById('weekHeader');
+  const gridTitle = document.getElementById('gridTitle');
+
+  // Helpers
+  function phoenixMidnight(y,m,d){
+    const utcMid = Date.UTC(y,m-1,d,0,0,0);
+    return new Date(utcMid - (PHX.tzOffset * 3600 * 1000));
   }
-}
-setInterval(updateBars,1000);
-updateBars();
+  function toJulian(d){ return d.getTime()/86400000 + 2440587.5; }
+  function moonInfo(d){
+    const jd = toJulian(d);
+    const age = ((jd - 2451550.1) % SYNODIC + SYNODIC) % SYNODIC;
+    const phase = age / SYNODIC;
+    const illum = (1 - Math.cos(2*Math.PI*phase)) / 2;
+    return { phase, illum, age };
+  }
+  function moonSVG(phase, illum){
+    const waxing = phase <= 0.5;
+    const k = 1.65 * (1 - illum);
+    const dir = waxing ? 1 : -1;
+    const offset = dir * k;
+    const cx = 18 + offset * 8;
+    const r = 10;
+    if(illum > 0.98) return `<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="18" r="${r}" fill="white"/></svg>`;
+    if(illum < 0.02) return `<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="18" r="${Math.max(2, r*illum)}" fill="white"/></svg>`;
+    return `<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+      <defs><mask id="m"><rect x="0" y="0" width="36" height="36" fill="black"/><circle cx="18" cy="18" r="${r}" fill="white"/><circle cx="${cx.toFixed(2)}" cy="18" r="${r}" fill="black"/></mask></defs>
+      <rect x="0" y="0" width="36" height="36" fill="black" mask="url(#m)"></rect>
+      <circle cx="18" cy="18" r="${r}" fill="white" fill-opacity="0.06" stroke="white" stroke-opacity="0.12"/>
+    </svg>`;
+  }
+
+  function buildCandidateStarts(refYear){
+    const list=[];
+    for(const y of [refYear-1, refYear, refYear+1]){
+      for(const s of STARTS){
+        const [m,d] = s.mmdd.split('-').map(x=>parseInt(x,10));
+        list.push({ name:s.name, short:s.short, color:s.color, start: phoenixMidnight(y,m,d) });
+      }
+    }
+    list.sort((a,b)=>a.start - b.start);
+    return list;
+  }
+
+  function findCurrentKishep(nowPhoenix){
+    const refYear = nowPhoenix.getFullYear();
+    const candidates = buildCandidateStarts(refYear);
+    let lastIdx = 0;
+    for(let i=0;i<candidates.length;i++){
+      if(candidates[i].start.getTime() <= nowPhoenix.getTime()) lastIdx = i;
+    }
+    const seq = [];
+    for(let i=0;i<8;i++) seq.push(candidates[(lastIdx + i) % candidates.length]);
+    let currentIndex = 0;
+    for(let i=0;i<seq.length-1;i++){
+      if(nowPhoenix.getTime() >= seq[i].start.getTime() && nowPhoenix.getTime() < seq[i+1].start.getTime()){
+        currentIndex = i; break;
+      }
+      if(i === seq.length-2 && nowPhoenix.getTime() >= seq[i+1].start.getTime()) currentIndex = i+1;
+    }
+    const kishepStart = seq[currentIndex].start;
+    const kishepEnd = seq[(currentIndex+1)%seq.length].start;
+    const canonicalIndex = STARTS.findIndex(s => s.name === seq[currentIndex].name);
+    return { kishepStart, kishepEnd, kishepObj: seq[currentIndex], canonicalIndex, seq, currentIndex };
+  }
+
+  // Build week header (Sun..Sat)
+  (function buildWeekHeader(){
+    const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    weekHeader.innerHTML = '';
+    days.forEach(d=>{
+      const el = document.createElement('div'); el.textContent = d; weekHeader.appendChild(el);
+    });
+  })();
+
+  // Render feya chips (static order) — we'll highlight current inside updateAll
+  (function buildFeyaChips(){
+    feyaRow.innerHTML = '';
+    const colors = [getComputedStyle(document.documentElement).getPropertyValue('--fatha').trim(),
+                    getComputedStyle(document.documentElement).getPropertyValue('--jagu').trim(),
+                    getComputedStyle(document.documentElement).getPropertyValue('--mosfa').trim(),
+                    getComputedStyle(document.documentElement).getPropertyValue('--seti').trim(),
+                    getComputedStyle(document.documentElement).getPropertyValue('--lathu').trim(),
+                    getComputedStyle(document.documentElement).getPropertyValue('--kepta').trim(),
+                    getComputedStyle(document.documentElement).getPropertyValue('--vomja').trim()];
+    for(let i=0;i<7;i++){
+      const chip = document.createElement('div');
+      chip.className = 'feyaChip';
+      chip.textContent = feyaNames[i];
+      chip.style.background = colors[i];
+      chip.style.opacity = '0.12';
+      chip.dataset.index = i;
+      feyaRow.appendChild(chip);
+    }
+  })();
+
+  // main update
+  function updateAll(){
+    const sysNow = new Date();
+    // Phoenix-local "now"
+    const nowPhoenix = new Date(sysNow.getTime() - (PHX.tzOffset * 3600 * 1000));
+    const phoenixMidToday = phoenixMidnight(nowPhoenix.getFullYear(), nowPhoenix.getMonth()+1, nowPhoenix.getDate());
+
+    // kishep calculations
+    const cur = findCurrentKishep(phoenixMidToday);
+    const kishepStart = cur.kishepStart;
+    const kishep = cur.kishepObj;
+    const canonicalIndex = cur.canonicalIndex >= 0 ? cur.canonicalIndex : 0;
+
+    let dayInKishep = Math.floor((phoenixMidToday.getTime() - kishepStart.getTime()) / msDay) + 1;
+    if(dayInKishep < 1) dayInKishep = 1;
+    if(dayInKishep > 52) dayInKishep = 52;
+
+    const june14This = phoenixMidnight(sysNow.getFullYear(), 6, 14);
+    let kishepYear = (sysNow.getTime() >= june14This.getTime()) ? (sysNow.getFullYear() - 2014 + 1) : (sysNow.getFullYear() - 2014);
+
+    // moon quarter and tokaido
+    const moonQuarter = Math.min(7, Math.floor((dayInKishep - 1) / (52/7)) + 1);
+    const tokaidoDay = ((dayInKishep - 1) % 7) + 1;
+
+    // header text
+    gregLine.textContent = sysNow.toLocaleDateString(undefined, { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+    const startFeyaIndex = 5;
+    const feyaIndex = (startFeyaIndex + (dayInKishep - 1)) % 7;
+    const feyaName = feyaNames[feyaIndex];
+    pashoLine.textContent = `${feyaName}, ${kishep.name} ${dayInKishep} • PASHTO ${kishepYear}`;
+
+    // pie — 7 slices, highlight current kishep
+    (function renderPie(){
+      pieSVG.innerHTML = '';
+      const r = 54, slices = 7, step = 360 / slices;
+      for(let i=0;i<slices;i++){
+        const sa = -90 + i*step, ea = sa + step;
+        const x1 = r*Math.cos(sa*Math.PI/180), y1 = r*Math.sin(sa*Math.PI/180);
+        const x2 = r*Math.cos(ea*Math.PI/180), y2 = r*Math.sin(ea*Math.PI/180);
+        const d = `M 0 0 L ${x1} ${y1} A ${r} ${r} 0 0 1 ${x2} ${y2} z`;
+        const p = document.createElementNS('http://www.w3.org/2000/svg','path');
+        p.setAttribute('d', d);
+        const color = STARTS[i].color || '#666';
+        p.setAttribute('fill', color);
+        p.setAttribute('opacity', i===canonicalIndex ? '1' : '0.18');
+        p.setAttribute('stroke', '#0b0b0b');
+        p.setAttribute('stroke-width', '0.6');
+        pieSVG.appendChild(p);
+      }
+      pieCenter.textContent = kishep.short;
+    })();
+
+    // moon
+    (function renderMoon(){
+      const mi = moonInfo(sysNow);
+      moonBox.innerHTML = moonSVG(mi.phase, mi.illum);
+      moonBox.title = `Moon ${Math.round(mi.illum*100)}%`;
+    })();
+
+    // bars
+    const k1Pct = Math.max(0, Math.min(100, (dayInKishep / 52) * 100));
+    k1fill.style.width = `${k1Pct.toFixed(1)}%`;
+    k1fill.style.background = kishep.color;
+    k1label.textContent = `Day ${dayInKishep} of 52`;
+
+    const k2Pct = (moonQuarter/7) * 100;
+    k2fill.style.width = `${k2Pct.toFixed(1)}%`;
+    // choose color for moon-quarter based on feya at quarter start
+    const quarterStart = Math.floor((moonQuarter-1)*(52/7))+1;
+    const quarterFeyaIdx = (startFeyaIndex + (quarterStart-1))%7;
+    k2fill.style.background = getComputedStyle(document.documentElement).getPropertyValue('--' + feyaNames[quarterFeyaIdx].toLowerCase()) || kishep.color;
+    k2label.textContent = `${moonQuarter}/7`;
+
+    const k3Pct = (tokaidoDay/7) * 100;
+    k3fill.style.width = `${k3Pct.toFixed(1)}%`;
+    const tokaFeyaIdx = (startFeyaIndex + (dayInKishep-1))%7;
+    k3fill.style.background = getComputedStyle(document.documentElement).getPropertyValue('--' + feyaNames[tokaFeyaIdx].toLowerCase()) || kishep.color;
+    k3label.textContent = `${tokaidoDay}/7`;
+
+    // Feya progress (midnight->midnight, split into 7 segments)
+    const midnightStart = phoenixMidnight(nowPhoenix.getFullYear(), nowPhoenix.getMonth()+1, nowPhoenix.getDate());
+    let diff = nowPhoenix.getTime() - midnightStart.getTime();
+    if(diff < 0) diff += msDay; // fallback
+    const segLen = msDay / 7;
+    const segIndex = Math.min(7, Math.max(1, Math.floor(diff / segLen) + 1));
+    const segProgress = ((diff % segLen) / segLen) * 100;
+    dayFill.style.width = (segIndex === 7 ? 100 : segProgress).toFixed(1) + '%';
+    const segFeyaIdx = (startFeyaIndex + (segIndex - 1)) % 7;
+    dayFill.style.background = getComputedStyle(document.documentElement).getPropertyValue('--' + feyaNames[segFeyaIdx].toLowerCase()) || kishep.color;
+    dayFill.textContent = `${segIndex}/7`;
+    dayLabel.textContent = `${segIndex}/7`;
+
+    // feya chips highlight current
+    const chips = feyaRow.querySelectorAll('.feyaChip');
+    chips.forEach((c, idx)=>{
+      if(idx === feyaIndex){
+        c.style.opacity = '1';
+        c.style.color = '#000';
+        c.style.background = getComputedStyle(document.documentElement).getPropertyValue('--' + feyaNames[idx].toLowerCase()) || kishep.color;
+      } else {
+        c.style.opacity = '0.12';
+        c.style.color = getComputedStyle(document.documentElement).getPropertyValue('--text') || '#e9eef6';
+        c.style.background = getComputedStyle(document.documentElement).getPropertyValue('--' + feyaNames[idx].toLowerCase()) || kishep.color;
+      }
+    });
+
+    // Build feyaRow text if empty (first run)
+    if(feyaRow.children.length === 0){
+      for(let i=0;i<7;i++){
+        const chip = document.createElement('div'); chip.className='feyaChip'; chip.textContent = feyaNames[i];
+        feyaRow.appendChild(chip);
+      }
+    }
+
+    // Mini-calendar grid (Sun-Sat columns, 8 rows = up to 56 slots but we fill 52 days)
+    (function renderCalendar(){
+      kishepGrid.innerHTML = '';
+      // week header already present
+      const day1Weekday = kishepStart.getDay(); // 0..6 (Sun=0)
+      const rows = 8, totalSlots = rows * 7;
+      const cells = new Array(totalSlots).fill(null);
+      for(let d=1; d<=52; d++){
+        const pos = day1Weekday + (d - 1);
+        const row = Math.floor(pos / 7);
+        const col = pos % 7;
+        const idx = row * 7 + col;
+        const dayMid = new Date(kishepStart.getTime() + (d - 1) * msDay);
+        const cell = document.createElement('div');
+        cell.className = 'dayCell';
+        const n = document.createElement('div'); n.className='dayNum'; n.textContent = d;
+        const g = document.createElement('div'); g.className='dayGreg'; g.textContent = `${dayMid.getMonth()+1}/${dayMid.getDate()}`;
+        cell.appendChild(n); cell.appendChild(g);
+
+        const todayMid = phoenixMidnight(nowPhoenix.getFullYear(), nowPhoenix.getMonth()+1, nowPhoenix.getDate());
+        if(dayMid.getTime() < todayMid.getTime()) cell.classList.add('past');
+        else if(dayMid.getTime() === todayMid.getTime()){
+          cell.classList.add('today');
+          const feyaIdx = (5 + (d-1)) % 7;
+          cell.style.background = getComputedStyle(document.documentElement).getPropertyValue('--' + feyaNames[feyaIdx].toLowerCase()) || kishep.color;
+          cell.style.color = '#000';
+        } else cell.classList.add('future');
+
+        cells[idx] = cell;
+      }
+      for(let i=0;i<totalSlots;i++){
+        if(cells[i]) kishepGrid.appendChild(cells[i]);
+        else {
+          const empty = document.createElement('div'); empty.className='dayCell'; empty.style.opacity='0.03'; kishepGrid.appendChild(empty);
+        }
+      }
+      gridTitle.textContent = `${kishep.name.toUpperCase()} — Day ${dayInKishep} of 52`;
+    })();
+
+    // live clock
+    liveClock.textContent = sysNow.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12:false});
+  } // end updateAll
+
+  // initial builds
+  (function init(){
+    // build pie / chips placeholders
+    feyaRow.innerHTML = '';
+    for(let i=0;i<7;i++){
+      const chip = document.createElement('div'); chip.className='feyaChip';
+      chip.textContent = feyaNames[i];
+      chip.style.background = STARTS[i].color;
+      chip.style.opacity = '0.12';
+      feyaRow.appendChild(chip);
+    }
+    // build week header (Sun..Sat)
+    const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    weekHeader.innerHTML = '';
+    days.forEach(d=>{
+      const el = document.createElement('div'); el.textContent = d; weekHeader.appendChild(el);
+    });
+  })();
+
+  // run
+  updateAll();
+  setInterval(updateAll, 30*1000); // update every 30s
+})();
 </script>
 
 </body>
 </html>
+
 
