@@ -4,38 +4,15 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-<title>Dorzafa — Feya labels + Mini calendar fix</title>
+<title>Dorzafa — Live Feya Calendar</title>
 <style>
 :root{
   --bg:#0b0c10; --card:#111217; --muted:#9aa0a6; --pad:14px; --radius:12px;
   --fatha:#8fb7d7; --jagu:#b8a0d1; --mosfa:#e08e84; --seti:#d9b070; --lathu:#efe18a; --kepta:#9ccf9b; --vomja:#76cbd0;
   --text:#e9eef6;
 }
-
-/* Fix for mobile: allow top visibility and scrolling */
-html,body{
-height:100%;
-margin:0;
-background:var(--bg);
-color:var(--text);
-font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
-display:block; /* remove vertical centering */
-box-sizing:border-box;
-padding:18px 18px 24px 18px; /* extra bottom padding for mobile scrolling */
-}
-
-.wrap{
-width:100%;
-max-width:980px;
-margin:0 auto; /* horizontal centering */
-background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
-border-radius:14px;
-padding:var(--pad);
-box-sizing:border-box;
-border:1px solid rgba(255,255,255,0.03)
-}
-
-/* your existing CSS */
+html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;padding:18px;}
+.wrap{max-width:980px;margin:0 auto;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border-radius:14px;padding:var(--pad);border:1px solid rgba(255,255,255,0.03);}
 header{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .title{font-family:Georgia,serif;font-size:20px;margin:0}
 .dateBlock{display:flex;flex-direction:column}
@@ -66,31 +43,22 @@ header{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .future{opacity:0.9}
 .legend{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;color:var(--muted);font-size:13px}
 .sw{width:14px;height:9px;border-radius:3px}
-
-@media(max-width:700px){
-.wrap{padding:12px}
-.pieWrap{width:92px;height:92px}
-.dayCell{min-height:44px;padding:6px}
-.track{height:30px}
-} </style>
-
+@media(max-width:700px){ .wrap{padding:12px} .pieWrap{width:92px;height:92px} .dayCell{min-height:44px;padding:6px} .track{height:30px} }
+</style>
 </head>
 <body>
-  <div class="wrap" role="application" aria-label="Dorzafa — Feya labels + mini cal fix">
-    <header>
-      <div class="dateBlock">
-        <div class="title">Dorzafa — Live</div>
-        <div class="greg" id="gregLine">—</div>
-        <div class="pasho" id="pashoLine">—</div>
-      </div>
-
-```
-  <div class="visuals" aria-hidden="false">
-    <div class="pieWrap" title="Kishep wheel">
+<div class="wrap">
+<header>
+  <div class="dateBlock">
+    <div class="title">Dorzafa — Live</div>
+    <div class="greg" id="gregLine">—</div>
+    <div class="pasho" id="pashoLine">—</div>
+  </div>
+  <div class="visuals">
+    <div class="pieWrap">
       <svg id="pie" viewBox="-60 -60 120 120" xmlns="http://www.w3.org/2000/svg"></svg>
       <div class="pieCenter" id="pieCenter">—</div>
     </div>
-
     <div style="display:flex;flex-direction:column;align-items:flex-end">
       <div class="moonBox" id="moonBox" title="Moon phase"></div>
       <div class="clock" id="liveClock">—</div>
@@ -98,9 +66,79 @@ header{display:flex;justify-content:space-between;align-items:center;gap:12px}
   </div>
 </header>
 
-<!-- rest of your HTML content stays exactly the same -->
-<!-- bars, feyaRow, gridWrap, legend, scripts... -->
-```
+<div class="bars">
+  <div>
+    <div class="barLabel"><div>Kishep (progress)</div><div id="k1label">—</div></div>
+    <div class="track"><div id="k1fill" class="fill"></div></div>
+  </div>
+  <div>
+    <div class="barLabel"><div>Moon-quarter (1–7)</div><div id="k2label">—</div></div>
+    <div class="track"><div id="k2fill" class="fill"></div></div>
+  </div>
+  <div>
+    <div class="barLabel"><div>Tokaido day (1–7)</div><div id="k3label">—</div></div>
+    <div class="track"><div id="k3fill" class="fill"></div></div>
+  </div>
+  <div>
+    <div class="barLabel"><div>Feya progress (midnight→midnight)</div><div id="dayLabel">—</div></div>
+    <div class="track"><div id="dayFill" class="fill"></div></div>
+    <div class="feyaRow" id="feyaRow"></div>
+  </div>
+</div>
+</div>
+
+<script>
+setTimeout(()=>{
+const STARTS = [
+  { name:"FATHAKISHEP", short:"Fatha", mmdd:"06-14", color:getComputedStyle(document.documentElement).getPropertyValue('--fatha').trim() },
+  { name:"JAGUKISHEP", short:"Jagu", mmdd:"08-05", color:getComputedStyle(document.documentElement).getPropertyValue('--jagu').trim() },
+  { name:"MOSFAKISHEP", short:"Mosfa", mmdd:"09-26", color:getComputedStyle(document.documentElement).getPropertyValue('--mosfa').trim() },
+  { name:"SETIKISHEP", short:"Seti", mmdd:"11-17", color:getComputedStyle(document.documentElement).getPropertyValue('--seti').trim() },
+  { name:"LATHUKISHEP", short:"Lathu", mmdd:"01-08", color:getComputedStyle(document.documentElement).getPropertyValue('--lathu').trim() },
+  { name:"KEPTAKISHEP", short:"Kepta", mmdd:"03-01", color:getComputedStyle(document.documentElement).getPropertyValue('--kepta').trim() },
+  { name:"VOMJAKISHEP", short:"Vomja", mmdd:"04-22", color:getComputedStyle(document.documentElement).getPropertyValue('--vomja').trim() }
+];
+const feyaNames = ["FATHAFEYA","JAGUFEYA","MOSFAFEYA","SETIFEYA","LATHUFEYA","KEPTAFEYA","VOMJAFEYA"];
+const PHX = { tzOffset:-7 };
+const msDay = 24*60*60*1000;
+function phoenixMidnight(y,m,d){ return new Date(Date.UTC(y,m-1,d,0,0,0)-(PHX.tzOffset*3600*1000)); }
+
+function buildCandidateStarts(refYear){ const list=[]; for(const y of [refYear-1,refYear,refYear+1]){ for(const s of STARTS){ const [m,d]=s.mmdd.split('-').map(Number); list.push({name:s.name,short:s.short,color:s.color,start:phoenixMidnight(y,m,d)}); } } list.sort((a,b)=>a.start-b.start); return list; }
+
+function findCurrentKishep(nowPhoenix){
+  const candidates=buildCandidateStarts(nowPhoenix.getFullYear());
+  let lastIdx=0;
+  for(let i=0;i<candidates.length;i++) if(candidates[i].start.getTime()<=nowPhoenix.getTime()) lastIdx=i;
+  const seq=[]; for(let i=0;i<8;i++) seq.push(candidates[(lastIdx+i)%candidates.length]);
+  let currentIndex=0;
+  for(let i=0;i<seq.length-1;i++) if(nowPhoenix.getTime()>=seq[i].start.getTime() && nowPhoenix.getTime()<seq[i+1].start.getTime()) currentIndex=i;
+  const kishepStart=seq[currentIndex].start;
+  const kishepEnd=seq[(currentIndex+1)%seq.length].start;
+  return {kishepStart,kishepEnd,kishepObj:seq[currentIndex],currentIndex};
+}
+
+function updateAll(){
+  const sysNow=new Date();
+  const phoenixNow=new Date(sysNow.getTime()-(PHX.tzOffset*3600*1000));
+  const todayPhoenix=phoenixMidnight(phoenixNow.getFullYear(),phoenixNow.getMonth()+1,phoenixNow.getDate());
+  const cur=findCurrentKishep(todayPhoenix);
+  let dayInKishep=Math.floor((todayPhoenix.getTime()-cur.kishepStart.getTime())/msDay)+1;
+  if(dayInKishep<1) dayInKishep=1; if(dayInKishep>52) dayInKishep=52;
+  const startFeyaIndex=5;
+  const feyaIndex=(startFeyaIndex+(dayInKishep-1))%7;
+  const feyaName=feyaNames[feyaIndex];
+  const kishepYear=sysNow.getFullYear()-2014+1;
+
+  document.getElementById('gregLine').textContent=sysNow.toLocaleDateString(undefined,{weekday:'long', year:'numeric', month:'long', day:'numeric'});
+  document.getElementById('pashoLine').textContent=`${feyaName}, ${cur.kishepObj.name} ${dayInKishep} • PASHTO ${kishepYear}`;
+  document.getElementById('k1label').textContent=`${dayInKishep}/52`;
+  document.getElementById('k1fill').style.width=`${(dayInKishep/52*100).toFixed(1)}%`;
+}
+
+updateAll();
+setInterval(updateAll,1000);
+},10);
+</script>
 
 </body>
 </html>
